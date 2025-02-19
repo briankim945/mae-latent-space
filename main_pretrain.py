@@ -60,6 +60,23 @@ def get_args_parser():
                         help='Use (per-patch) normalized pixels as targets for computing loss')
     parser.set_defaults(norm_pix_loss=False)
 
+    parser.add_argument('--patch_size', default=16, type=int, help="""Size in pixels
+        of input square patches - default 16 (for 16x16 patches). Using smaller
+        values leads to better performance but requires more memory. Applies only
+        for ViTs (vit_tiny, vit_small and vit_base). If <16, we recommend disabling
+        mixed precision training (--use_fp16 false) to avoid unstabilities.""")
+
+    parser.add_argument('--pred_ratio', default=0.3, type=float, nargs='+', help="""Ratio of partial prediction.
+        If a list of ratio is specified, one of them will be randomly choosed for each patch.""")
+    
+    parser.add_argument('--pred_ratio_var', default=0, type=float, nargs='+', help="""Variance of partial prediction
+        ratio. Length should be indentical to the length of pred_ratio. 0 for disabling. """)
+
+    parser.add_argument('--pred_shape', default='block', type=str, help="""Shape of partial prediction.""")
+    
+    parser.add_argument('--pred_start_epoch', default=0, type=int, help="""Start epoch to perform masked
+        image prediction. We typically set this to 50 for swin transformer. (Default: 0)""")
+
     # Optimizer parameters
     parser.add_argument('--weight_decay', type=float, default=0.05,
                         help='weight decay (default: 0.05)')
