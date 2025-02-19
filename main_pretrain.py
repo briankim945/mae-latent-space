@@ -135,7 +135,7 @@ def main(args):
         args.crops_scale,
         args.crops_number,
     )
-    pred_size = args.patch_size * 8 if 'swin' in args.arch else args.patch_size
+    pred_size = args.patch_size
     dataset_train = ImageFolderMask(
         args.data_path, 
         transform=transform,
