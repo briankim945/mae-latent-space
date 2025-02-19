@@ -24,9 +24,9 @@ from PIL import Image
 from torchvision import datasets, transforms
 from torchvision import models as torchvision_models
 from tensorboardX import SummaryWriter
-from models.head import iBOTHead
-from loader import ImageFolderMask
-from evaluation.unsupervised.unsup_cls import eval_pred
+from ibot.models.head import iBOTHead
+from ibot.loader import ImageFolderMask
+from ibot.evaluation.unsupervised.unsup_cls import eval_pred
 from ibot import utils
 
 def get_args_parser():
