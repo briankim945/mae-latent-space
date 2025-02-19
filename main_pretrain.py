@@ -34,6 +34,9 @@ import models_mae
 
 from engine_pretrain import train_one_epoch
 
+from ibot.main_ibot import DataAugmentationiBOTSingle
+from loader import ImageFolderMask
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE pre-training', add_help=False)
@@ -101,6 +104,14 @@ def get_args_parser():
     parser.add_argument('--dist_url', default='env://',
                         help='url used to set up distributed training')
 
+    # Multi-crop parameters
+    parser.add_argument('--crops_number', type=int, default=2, help="""Number of
+        views to generate. Default is to use two crops. """)
+    parser.add_argument('--crops_scale', type=float, nargs='+', default=(0.14, 1.),
+        help="""Scale range of the cropped image before resizing, relatively to the origin image.
+        Used for large view cropping. When disabling multi-crop (--local_crops_number 0), we
+        recommand using a wider range of scale ("--crops_scale 0.14 1." for example)""")
+
     return parser
 
 
@@ -120,6 +131,21 @@ def main(args):
     cudnn.benchmark = True
 
     # simple augmentation
+    transform = DataAugmentationiBOTSingle(
+        args.crops_scale,
+        args.crops_number,
+    )
+    pred_size = args.patch_size * 8 if 'swin' in args.arch else args.patch_size
+    dataset_train = ImageFolderMask(
+        args.data_path, 
+        transform=transform,
+        patch_size=pred_size,
+        pred_ratio=args.pred_ratio,
+        pred_ratio_var=args.pred_ratio_var,
+        pred_aspect_ratio=(0.3, 1/0.3),
+        pred_shape=args.pred_shape,
+        pred_start_epoch=args.pred_start_epoch)
+    
     transform_train = transforms.Compose([
             transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
             transforms.RandomHorizontalFlip(),
