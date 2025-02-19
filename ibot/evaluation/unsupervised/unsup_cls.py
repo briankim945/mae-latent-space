@@ -10,14 +10,14 @@ import argparse
 import copy
 import torch
 import torch.backends.cudnn as cudnn
-import utils
-import models
+from ibot import utils
+from ibot import models
 
 from sklearn import metrics
 from munkres import Munkres
 from torchvision import transforms as pth_transforms
-from models.head import DINOHead
-from loader import ImageFolder
+from ibot.models.head import DINOHead
+from ibot.loader import ImageFolder
 
 def eval_pred(label, pred, calc_acc=False):
     nmi = metrics.normalized_mutual_info_score(label, pred)
