@@ -12,7 +12,6 @@ import time
 import math
 import json
 import numpy as np
-import models
 import torch
 import torch.nn as nn
 import torch.distributed as dist
@@ -28,6 +27,7 @@ from ibot.models.head import iBOTHead
 from ibot.loader import ImageFolderMask
 from ibot.evaluation.unsupervised.unsup_cls import eval_pred
 from ibot import utils
+from ibot import models
 
 def get_args_parser():
     parser = argparse.ArgumentParser('iBOT', add_help=False)
