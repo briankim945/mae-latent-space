@@ -12,7 +12,6 @@ import time
 import math
 import json
 import numpy as np
-import utils
 import models
 import torch
 import torch.nn as nn
@@ -28,6 +27,7 @@ from tensorboardX import SummaryWriter
 from models.head import iBOTHead
 from loader import ImageFolderMask
 from evaluation.unsupervised.unsup_cls import eval_pred
+from ibot import utils
 
 def get_args_parser():
     parser = argparse.ArgumentParser('iBOT', add_help=False)
