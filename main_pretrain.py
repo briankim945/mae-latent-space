@@ -35,7 +35,7 @@ import models_mae
 from engine_pretrain import train_one_epoch
 
 from ibot.main_ibot import DataAugmentationiBOTSingle
-from loader import ImageFolderMask
+from ibot.loader import ImageFolderMask
 
 
 def get_args_parser():
