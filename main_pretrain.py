@@ -73,7 +73,7 @@ def get_args_parser():
         ratio. Length should be indentical to the length of pred_ratio. 0 for disabling. """)
 
     parser.add_argument('--pred_shape', default='block', type=str, help="""Shape of partial prediction.""")
-    
+
     parser.add_argument('--pred_start_epoch', default=0, type=int, help="""Start epoch to perform masked
         image prediction. We typically set this to 50 for swin transformer. (Default: 0)""")
 
@@ -163,12 +163,12 @@ def main(args):
         pred_shape=args.pred_shape,
         pred_start_epoch=args.pred_start_epoch)
     
-    transform_train = transforms.Compose([
-            transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-    dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
+    # transform_train = transforms.Compose([
+    #         transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
+    #         transforms.RandomHorizontalFlip(),
+    #         transforms.ToTensor(),
+    #         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+    # dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
     print(dataset_train)
 
     if True:  # args.distributed:
