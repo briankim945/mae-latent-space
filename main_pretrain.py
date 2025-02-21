@@ -35,7 +35,7 @@ import models_mae
 
 from engine_pretrain import train_one_epoch
 
-from ibot.main_ibot import DataAugmentationiBOTSingle
+from ibot.main_ibot import DataAugmentationiBOT
 from ibot.loader import ImageFolderMask
 
 
@@ -149,9 +149,11 @@ def main(args):
     cudnn.benchmark = True
 
     # simple augmentation
-    transform = DataAugmentationiBOTSingle(
+    transform = DataAugmentationiBOT(
         args.crops_scale,
+        0,
         args.crops_number,
+        0, # Set local crops to 0
     )
     pred_size = args.patch_size
     dataset_train = ImageFolderMask(
