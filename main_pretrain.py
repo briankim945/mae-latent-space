@@ -149,7 +149,7 @@ def main(args):
     cudnn.benchmark = True
 
     # simple augmentation
-    transform_train = DataAugmentationiBOTSingle(
+    transform = DataAugmentationiBOTSingle(
         args.crops_scale,
         args.crops_number,
     )
