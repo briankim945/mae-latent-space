@@ -113,4 +113,5 @@ class ImageFolderMask(ImageFolder):
 
             masks.append(mask)
 
-        return output + (masks,)
+        # return output + (masks,)
+        return output

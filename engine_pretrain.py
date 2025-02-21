@@ -37,17 +37,14 @@ def train_one_epoch(model: torch.nn.Module,
         print('log_dir: {}'.format(log_writer.log_dir))
 
     # data_loader will return (images, labels, masks), for now just passing in the samples and using the built-in mask method
-    for data_iter_step, (samples, labels, masks) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
+    for data_iter_step, (samples, _) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
 
         # we use a per iteration (instead of per epoch) lr scheduler
         if data_iter_step % accum_iter == 0:
             lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
 
         # Convert samples to Tensor
-        print(samples[0].shape)
-        print(len(samples), len(labels), len(masks))
         samples = torch.stack(samples, dim=0)
-        print(samples.shape)
 
         samples = samples.to(device, non_blocking=True)
 
