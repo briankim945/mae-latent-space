@@ -43,6 +43,9 @@ def train_one_epoch(model: torch.nn.Module,
         if data_iter_step % accum_iter == 0:
             lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
 
+        # Combine list of global crops
+        samples = torch.cat(samples, 0)
+
         # Convert samples to Tensor
         samples = samples.to(device, non_blocking=True)
 

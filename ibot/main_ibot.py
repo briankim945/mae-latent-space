@@ -620,8 +620,8 @@ class DataAugmentationiBOT(object):
             crops.append(self.local_transfo(image))
         return crops
 
-class DataAugmentationiBOTSingle(object):
-    def __init__(self, crops_scale, crops_number):
+class DataAugmentationiBOT(object):
+    def __init__(self, global_crops_scale, local_crops_scale, global_crops_number, local_crops_number):
         flip_and_color_jitter = transforms.Compose([
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomApply(
@@ -635,32 +635,42 @@ class DataAugmentationiBOTSingle(object):
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ])
 
-        self.crops_number = crops_number
-        # transformation for the first crop
-        self.transfo1 = transforms.Compose([
-            transforms.RandomResizedCrop(224, scale=crops_scale, interpolation=Image.BICUBIC),
+        self.global_crops_number = global_crops_number
+        # transformation for the first global crop
+        self.global_transfo1 = transforms.Compose([
+            transforms.RandomResizedCrop(224, scale=global_crops_scale, interpolation=Image.BICUBIC),
             flip_and_color_jitter,
             utils.GaussianBlur(1.0),
             normalize,
         ])
-        # transformation for the rest of the crops
-        self.transfo2 = transforms.Compose([
-            transforms.RandomResizedCrop(224, scale=crops_scale, interpolation=Image.BICUBIC),
+        # transformation for the rest of global crops
+        self.global_transfo2 = transforms.Compose([
+            transforms.RandomResizedCrop(224, scale=global_crops_scale, interpolation=Image.BICUBIC),
             flip_and_color_jitter,
             utils.GaussianBlur(0.1),
             utils.Solarization(0.2),
             normalize,
         ])
+        # transformation for the local crops
+        self.local_crops_number = local_crops_number
+        self.local_transfo = transforms.Compose([
+            transforms.RandomResizedCrop(96, scale=local_crops_scale, interpolation=Image.BICUBIC),
+            flip_and_color_jitter,
+            utils.GaussianBlur(p=0.5),
+            normalize,
+        ])
 
     def __call__(self, image):
-        # crops = []
-        # crops.append(self.transfo1(image))
-        # for _ in range(self.crops_number - 1):
-        #     crops.append(self.transfo2(image))
-        # return crops
+        crops = []
+        crops.append(self.global_transfo1(image))
+        for _ in range(self.global_crops_number - 1):
+            crops.append(self.global_transfo2(image))
 
-        # for now, just return the basic first crop, prevent returning duplicates
-        return self.transfo1(image)
+        # Only return the global crops to let MAE apply its own crops
+        # for _ in range(self.local_crops_number):
+        #     crops.append(self.local_transfo(image))
+        
+        return crops
 
 
 if __name__ == '__main__':
