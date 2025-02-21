@@ -653,11 +653,14 @@ class DataAugmentationiBOTSingle(object):
         ])
 
     def __call__(self, image):
-        crops = []
-        crops.append(self.transfo1(image))
-        for _ in range(self.crops_number - 1):
-            crops.append(self.transfo2(image))
-        return crops
+        # crops = []
+        # crops.append(self.transfo1(image))
+        # for _ in range(self.crops_number - 1):
+        #     crops.append(self.transfo2(image))
+        # return crops
+
+        # for now, just return the basic first crop, prevent returning duplicates
+        return self.transfo1(image)
 
 
 if __name__ == '__main__':

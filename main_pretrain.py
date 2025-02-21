@@ -149,27 +149,27 @@ def main(args):
     cudnn.benchmark = True
 
     # simple augmentation
-    # transform_train = DataAugmentationiBOTSingle(
-    #     args.crops_scale,
-    #     args.crops_number,
-    # )
-    # pred_size = args.patch_size
-    # dataset_train = ImageFolderMask(
-    #     args.data_path, 
-    #     transform=transform,
-    #     patch_size=pred_size,
-    #     pred_ratio=args.pred_ratio,
-    #     pred_ratio_var=args.pred_ratio_var,
-    #     pred_aspect_ratio=(0.3, 1/0.3),
-    #     pred_shape=args.pred_shape,
-    #     pred_start_epoch=args.pred_start_epoch)
+    transform_train = DataAugmentationiBOTSingle(
+        args.crops_scale,
+        args.crops_number,
+    )
+    pred_size = args.patch_size
+    dataset_train = ImageFolderMask(
+        args.data_path, 
+        transform=transform,
+        patch_size=pred_size,
+        pred_ratio=args.pred_ratio,
+        pred_ratio_var=args.pred_ratio_var,
+        pred_aspect_ratio=(0.3, 1/0.3),
+        pred_shape=args.pred_shape,
+        pred_start_epoch=args.pred_start_epoch)
     
-    transform_train = transforms.Compose([
-            transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-    dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
+    # transform_train = transforms.Compose([
+    #         transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
+    #         transforms.RandomHorizontalFlip(),
+    #         transforms.ToTensor(),
+    #         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+    # dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
     print(dataset_train)
 
     if True:  # args.distributed:
