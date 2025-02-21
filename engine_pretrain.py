@@ -43,10 +43,10 @@ def train_one_epoch(model: torch.nn.Module,
         if data_iter_step % accum_iter == 0:
             lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
 
-        # samples = samples.to(device, non_blocking=True)
-        
-        # move images to gpu
-        samples = [im.cuda(non_blocking=True) for im in samples]
+        # Convert samples to Tensor
+        samples = torch.Tensor(samples)
+
+        samples = samples.to(device, non_blocking=True)
 
         with torch.cuda.amp.autocast():
             loss, _, _ = model(samples, mask_ratio=args.mask_ratio)
