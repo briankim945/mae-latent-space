@@ -43,12 +43,8 @@ def train_one_epoch(model: torch.nn.Module,
         if data_iter_step % accum_iter == 0:
             lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
 
-        print(type(samples))
-        print(type(samples[0]))
-        print(samples)
-
         # Convert samples to Tensor
-        samples = torch.Tensor(samples)
+        samples = torch.stack(samples, dim=0)
 
         samples = samples.to(device, non_blocking=True)
 
