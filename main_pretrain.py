@@ -151,7 +151,7 @@ def main(args):
     # simple augmentation
     transform = DataAugmentationiBOT(
         args.crops_scale,
-        (),
+        (0, 0),
         args.crops_number,
         0, # Set local crops to 0
     )
