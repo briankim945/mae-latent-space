@@ -53,8 +53,6 @@ class ImageFolderMask(ImageFolder):
 
     def __getitem__(self, index):
         output = super(ImageFolderMask, self).__getitem__(index)
-
-        assert len(output) == 2
                 
         masks = []
         for img in output[0]:
@@ -114,8 +112,5 @@ class ImageFolderMask(ImageFolder):
                 assert False
 
             masks.append(mask)
-
-        print(len(masks))
-        print(len(output + (masks,)))
 
         return output + (masks,)
