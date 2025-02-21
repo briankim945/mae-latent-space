@@ -115,4 +115,7 @@ class ImageFolderMask(ImageFolder):
 
             masks.append(mask)
 
+        print(len(masks))
+        print(len(output + (masks,)))
+
         return output + (masks,)
