@@ -44,7 +44,9 @@ def train_one_epoch(model: torch.nn.Module,
             lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
 
         # Convert samples to Tensor
+        print(samples[0].shape)
         samples = torch.stack(samples, dim=0)
+        print(samples.shape)
 
         samples = samples.to(device, non_blocking=True)
 
