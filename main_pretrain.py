@@ -97,6 +97,8 @@ def get_args_parser():
                         help='dataset path')
     parser.add_argument('--split', default='train', type=str,
                         help='split string')
+    parser.add_argument('--local', default=True, action=argparse.BooleanOptionalAction,
+                        help='pull from local folder, if remote state --no-local')
 
     parser.add_argument('--output_dir', default='./output_dir',
                         help='path where to save, empty for no saving')
@@ -159,7 +161,8 @@ def main(args):
     )
     pred_size = args.patch_size
 
-    try:
+    if args.local:
+        print("Pulling locally")
         dataset_train = ImageFolderMask(
             args.data_path, 
             transform=transform,
@@ -169,8 +172,8 @@ def main(args):
             pred_aspect_ratio=(0.3, 1/0.3),
             pred_shape=args.pred_shape,
             pred_start_epoch=args.pred_start_epoch)
-        print(f"Cannot load directly from local folder {args.data_path}, attempting to pull from Huggingface remote...")
-    except:
+    else:
+        print("Pulling remotely")
         dataset_train = ImageFolderMaskDataset(
             args.data_path, 
             transform=transform,
