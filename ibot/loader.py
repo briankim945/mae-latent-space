@@ -123,7 +123,7 @@ class ImageFolderMask(ImageFolder):
 class ImageFolderMaskDataset(ImageFolder):
     def __init__(self, *args, path, split, patch_size, pred_ratio, pred_ratio_var, pred_aspect_ratio, 
                  pred_shape='block', pred_start_epoch=0, **kwargs):
-        super(ImageFolderMask, self).__init__(*args, **kwargs)
+        super(ImageFolderMaskDataset, self).__init__(*args, **kwargs)
         self.samples = self.make_dataset(path, split)
         self.psz = patch_size
         self.pred_ratio = pred_ratio[0] if isinstance(pred_ratio, list) and \
