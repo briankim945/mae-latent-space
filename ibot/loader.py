@@ -230,6 +230,9 @@ class ImageFolderMaskDataset(ImageFolder):
         # return output
         return sample, target
     
+    def __len__(self):
+        return len(self.samples)
+    
     @staticmethod
     def make_dataset(
         directory: Union[str, Path],
