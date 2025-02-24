@@ -173,8 +173,9 @@ def main(args):
     except:
         dataset_train = ImageFolderMaskDataset(
             args.data_path, 
-            args.split,
             transform=transform,
+            path=args.data_path, 
+            split=args.split,
             patch_size=pred_size,
             pred_ratio=args.pred_ratio,
             pred_ratio_var=args.pred_ratio_var,
