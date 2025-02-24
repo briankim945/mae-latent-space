@@ -169,6 +169,7 @@ def main(args):
             pred_aspect_ratio=(0.3, 1/0.3),
             pred_shape=args.pred_shape,
             pred_start_epoch=args.pred_start_epoch)
+        print(f"Cannot load directly from local folder {args.data_path}, attempting to pull from Huggingface remote...")
     except:
         dataset_train = ImageFolderMaskDataset(
             args.data_path, 
