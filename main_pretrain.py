@@ -36,7 +36,7 @@ import models_mae
 from engine_pretrain import train_one_epoch
 
 from ibot.main_ibot import DataAugmentationiBOT
-from ibot.loader import ImageFolderMask
+from ibot.loader import ImageFolderMask, ImageFolderMaskDataset
 
 
 def get_args_parser():
@@ -95,6 +95,8 @@ def get_args_parser():
     # Dataset parameters
     parser.add_argument('--data_path', default='/datasets01/imagenet_full_size/061417/', type=str,
                         help='dataset path')
+    parser.add_argument('--split', default='train', type=str,
+                        help='split string')
 
     parser.add_argument('--output_dir', default='./output_dir',
                         help='path where to save, empty for no saving')
@@ -156,15 +158,28 @@ def main(args):
         0, # Set local crops to 0
     )
     pred_size = args.patch_size
-    dataset_train = ImageFolderMask(
-        args.data_path, 
-        transform=transform,
-        patch_size=pred_size,
-        pred_ratio=args.pred_ratio,
-        pred_ratio_var=args.pred_ratio_var,
-        pred_aspect_ratio=(0.3, 1/0.3),
-        pred_shape=args.pred_shape,
-        pred_start_epoch=args.pred_start_epoch)
+
+    try:
+        dataset_train = ImageFolderMask(
+            args.data_path, 
+            transform=transform,
+            patch_size=pred_size,
+            pred_ratio=args.pred_ratio,
+            pred_ratio_var=args.pred_ratio_var,
+            pred_aspect_ratio=(0.3, 1/0.3),
+            pred_shape=args.pred_shape,
+            pred_start_epoch=args.pred_start_epoch)
+    except:
+        dataset_train = ImageFolderMaskDataset(
+            args.data_path, 
+            args.split,
+            transform=transform,
+            patch_size=pred_size,
+            pred_ratio=args.pred_ratio,
+            pred_ratio_var=args.pred_ratio_var,
+            pred_aspect_ratio=(0.3, 1/0.3),
+            pred_shape=args.pred_shape,
+            pred_start_epoch=args.pred_start_epoch)
     
     # transform_train = transforms.Compose([
     #         transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
