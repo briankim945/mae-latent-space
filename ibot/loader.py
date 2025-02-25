@@ -252,5 +252,5 @@ class ImageFolderMaskDataset(ImageFolder):
         path: str,
         split: Optional[str] = None,
     ) -> Dataset:
-        ds = load_dataset(path, split, trust_remote_code=True)
+        ds = load_dataset(path, split, trust_remote_code=True, streaming=True)
         return ds.with_format("torch")
