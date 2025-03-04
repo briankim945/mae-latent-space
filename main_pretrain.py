@@ -97,8 +97,6 @@ def get_args_parser():
                         help='dataset path')
     parser.add_argument('--split', default='train', type=str,
                         help='split string')
-    parser.add_argument('--local', default=True, action=argparse.BooleanOptionalAction,
-                        help='pull from local folder, if remote state --no-local')
 
     parser.add_argument('--output_dir', default='./output_dir',
                         help='path where to save, empty for no saving')
@@ -161,30 +159,15 @@ def main(args):
     )
     pred_size = args.patch_size
 
-    if args.local:
-        print("Pulling locally")
-        dataset_train = ImageFolderMask(
-            args.data_path, 
-            transform=transform,
-            patch_size=pred_size,
-            pred_ratio=args.pred_ratio,
-            pred_ratio_var=args.pred_ratio_var,
-            pred_aspect_ratio=(0.3, 1/0.3),
-            pred_shape=args.pred_shape,
-            pred_start_epoch=args.pred_start_epoch)
-    else:
-        print("Pulling remotely")
-        dataset_train = ImageFolderMaskDataset(
-            args.data_path, 
-            transform=transform,
-            path=args.data_path, 
-            split=args.split,
-            patch_size=pred_size,
-            pred_ratio=args.pred_ratio,
-            pred_ratio_var=args.pred_ratio_var,
-            pred_aspect_ratio=(0.3, 1/0.3),
-            pred_shape=args.pred_shape,
-            pred_start_epoch=args.pred_start_epoch)
+    dataset_train = ImageFolderMask(
+        args.data_path, 
+        transform=transform,
+        patch_size=pred_size,
+        pred_ratio=args.pred_ratio,
+        pred_ratio_var=args.pred_ratio_var,
+        pred_aspect_ratio=(0.3, 1/0.3),
+        pred_shape=args.pred_shape,
+        pred_start_epoch=args.pred_start_epoch)
     
     # transform_train = transforms.Compose([
     #         transforms.RandomResizedCrop(args.input_size, scale=(0.2, 1.0), interpolation=3),  # 3 is bicubic
