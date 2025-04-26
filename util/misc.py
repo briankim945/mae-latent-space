@@ -312,7 +312,7 @@ def save_model(args, epoch, model, model_without_ddp, optimizer, loss_scaler):
         model.save_checkpoint(save_dir=args.output_dir, tag="checkpoint-%s" % epoch_name, client_state=client_state)
 
 
-def load_model(args, model_without_ddp, optimizer, loss_scaler):
+def load_model(args, model_without_ddp, optimizer, loss_scaler, to_restore=None):
     if args.resume:
         if args.resume.startswith('https'):
             checkpoint = torch.hub.load_state_dict_from_url(
@@ -327,6 +327,10 @@ def load_model(args, model_without_ddp, optimizer, loss_scaler):
             if 'scaler' in checkpoint:
                 loss_scaler.load_state_dict(checkpoint['scaler'])
             print("With optim & sched!")
+        if to_restore is not None:
+            for var_name in to_restore:
+                if var_name in checkpoint:
+                    to_restore[var_name] = checkpoint[var_name]
 
 
 def all_reduce_mean(x):

@@ -231,11 +231,13 @@ def main(args):
     print(optimizer)
     loss_scaler = NativeScaler()
 
-    misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
+    to_restore = {"epoch": args.start_epoch}
+    misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler, to_restore=to_restore)
+    start_epoch = to_restore["epoch"]
 
     print(f"Start training for {args.epochs} epochs")
     start_time = time.time()
-    for epoch in range(args.start_epoch, args.epochs):
+    for epoch in range(start_epoch, args.epochs):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
         train_stats = train_one_epoch(
